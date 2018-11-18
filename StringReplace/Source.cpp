@@ -1,6 +1,5 @@
 #include "Header.h"
 #include <Windows.h>
-#include <iostream>
 
 using namespace std;
 
@@ -14,13 +13,9 @@ string GetSurname()
 	return "Kaminsky";
 }
 
-void SayHello()
+void Replace(string &searchString, string replaceString)
 {
-	cout << "\nHELLO FROM INJECTION DLL, MF!\n" << endl;
-}
-
-void Replace(string searchString, string replaceString)
-{
+	cout << "REPLACING...\n" << endl;
 	MEMORY_BASIC_INFORMATION mbi;//иформация о страницах в виртуальной памяти процесса
 	BOOL isMatch,isChanged;
 	CHAR page[4096];
@@ -44,14 +39,14 @@ void Replace(string searchString, string replaceString)
 
 			for (size_t pagePos = 0; pagePos < pageSize - searchLength; pagePos++)
 			{
-				isMatch = false;
+				isMatch = true;
 				for (int strPos = 0; (strPos < searchLength) && isMatch; strPos++)
 				{
 					isMatch = (page[pagePos + strPos] == searchString[strPos]);
 				}
 
 				if (isMatch)
-				{
+				{		
 					for (int strPos = 0; strPos < searchLength; strPos++)
 					{
 						page[pagePos + strPos] = replaceString[strPos % replaceLength];
@@ -62,7 +57,7 @@ void Replace(string searchString, string replaceString)
 			
 			if (isChanged)
 			{
-				WriteProcessMemory(hProcess, (LPVOID)currAdress, (LPCVOID)page, sizeof(page), NULL);
+				WriteProcessMemory(hProcess, (LPVOID)currAdress, (LPCVOID)page, sizeof(page), NULL);				
 			}
 		}
 	}

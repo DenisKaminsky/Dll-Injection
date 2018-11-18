@@ -1,9 +1,11 @@
 #include <Windows.h>
+#include <stdio.h>
 #include <iostream>
 #include <string>
-#include <stdio.h>
-//#include "..\StringReplace\Header.h"
-//#pragma comment(lib,"..\\Debug\\StringReplace.dll")
+
+#include "..\\StringReplace\\Header.h"
+#pragma comment(lib,"..\\Debug\\StringReplace.dll")
+
 using namespace std;
 
 const int n = 5; //strings count
@@ -25,7 +27,6 @@ void InitializeArray()
 void DeleteObjects()
 {
 	delete[] stringArray;
-
 }
 
 void replaceString()
@@ -35,7 +36,8 @@ void replaceString()
 		cout << stringArray[i] << endl;
 	cout << "" << endl;
 
-	//Replace(stringArray[3].c_str(), "DenisKaminsky");
+	Replace(stringArray[0], "DenisKaminsky");
+
 	cout << "Final array: \n" << endl;
 	for (int i = 0; i < n; i++)
 		cout << stringArray[i] << endl;
@@ -45,8 +47,13 @@ void replaceString()
 void main()
 {
 	InitializeArray();
-	//string replace
-	//replaceString();
+	//string search
+	cout << "<<Task 1>>:" << endl;
+	replaceString();
 
+	//static lib
+	cout << "<<Task 2>>:" << endl;
+	cout << "Name: " << GetName() << endl;
+	cout << "Surname: " << GetSurname() << "\n" << endl;
 	DeleteObjects();
 }
