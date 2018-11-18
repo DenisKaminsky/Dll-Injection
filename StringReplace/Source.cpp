@@ -3,16 +3,6 @@
 
 using namespace std;
 
-string GetName()
-{
-	return "Denis";
-}
-
-string GetSurname()
-{
-	return "Kaminsky";
-}
-
 void Replace(string &searchString, string replaceString)
 {
 	cout << "REPLACING...\n" << endl;

@@ -1,0 +1,5 @@
+LIBRARY "DynamicLibrary"
+
+EXPORTS
+GetSqrt @1
+GetExp @2
