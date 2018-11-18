@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{B8248D77-B1BB-43C0-AD2C-DD2846B75C5F}</ProjectGuid>
+    <ProjectGuid>{AA1237BC-DF6D-40C1-AE79-A25BBA762AAB}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>DllInjection</RootNamespace>
+    <RootNamespace>MainProgram</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -146,7 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
