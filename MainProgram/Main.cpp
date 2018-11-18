@@ -1,8 +1,9 @@
 #include <Windows.h>
-#include <stdio.h>
 #include <iostream>
 #include <string>
-
+#include <stdio.h>
+//#include "..\StringReplace\Header.h"
+//#pragma comment(lib,"..\\Debug\\StringReplace.dll")
 using namespace std;
 
 const int n = 5; //strings count
@@ -10,6 +11,7 @@ string* stringArray;
 
 void InitializeArray()
 {
+	int a = 5;
 	string s = "";
 
 	stringArray = new string[n];
@@ -44,7 +46,7 @@ void main()
 {
 	InitializeArray();
 	//string replace
-	replaceString();
+	//replaceString();
 
 	DeleteObjects();
 }
