@@ -21,7 +21,7 @@ void Replace(string &searchString, string replaceString)
 	for (DWORD_PTR currAdress = memStart; currAdress < memEnd; currAdress += pageSize)
 	{
 		VirtualQueryEx(hProcess, (LPCVOID)(currAdress), &mbi, sizeof(mbi));//запрос инфы о страницах. currAdr - адрес региона страниц
-		if (mbi.State == MEM_COMMIT && mbi.Protect != PAGE_NOACCESS)//Mem commit - страница для которых выделено место в физ памяти 																							
+		if ((mbi.State == MEM_COMMIT) && (mbi.Protect != PAGE_NOACCESS) )//Mem commit - страница для которых выделено место в физ памяти 																							
 		{			
 			isChanged = false;
 			ZeroMemory(page, sizeof(page));
