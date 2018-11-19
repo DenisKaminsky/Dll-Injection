@@ -74,7 +74,7 @@ void injectDll(string processName)
 		if (CreateRemoteThread(hRemoteProcess, NULL, 0, (LPTHREAD_START_ROUTINE)lpStartAddress, (LPVOID)dllNameAddress, 0, NULL))
 		{
 			Sleep(1000);
-			cout << "Created remote thread" << endl;
+			cout << "Dll was injected" << endl;
 			CloseHandle(hRemoteProcess);
 		}
 		else
@@ -83,7 +83,6 @@ void injectDll(string processName)
 	else {
 		cout << "Cannot find process " << processName << endl;
 	}
-
 }
 
 void loadLibrary()
@@ -134,7 +133,11 @@ void main()
 	loadLibrary();
 
 	cout << "" << endl << "<<Task4 - Dll injection>>:" << endl;
-	injectDll("");
+	cout << "Press Enter to start:" << endl;
+	getchar();
+	injectDll("DemoProcess.exe");
 
 	DeleteObjects();
+	cout << "Press Enter to Exit: " << endl;
+	getchar();
 }
