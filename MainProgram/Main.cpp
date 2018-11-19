@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <string>
+#include <tlhelp32.h>
 
 #include "..\\StringReplace\\Header.h"
 #pragma comment(lib,"..\\Debug\\StringReplace.dll")
@@ -32,6 +33,57 @@ void InitializeArray()
 void DeleteObjects()
 {
 	delete[] stringArray;
+}
+
+DWORD getPID(string processName)
+{
+	DWORD PID = 0;
+	wstring wName(processName.begin(), processName.end());
+	HANDLE pHandle = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);//создает снэпшот запущенных процессов
+	PROCESSENTRY32 processEntry;	
+	ZeroMemory(&processEntry, sizeof(processEntry));
+	processEntry.dwSize = sizeof(processEntry);
+	bool Loop = Process32First(pHandle, &processEntry);//первый процесс в снэпшоте
+
+	while (Loop)
+	{
+		if (wName.compare(processEntry.szExeFile) == 0)//имя исполняемого файла процесса
+		{
+			PID = processEntry.th32ProcessID;
+			CloseHandle(pHandle);
+			break;
+		}
+		Loop = Process32Next(pHandle, &processEntry);
+	}
+
+	return PID;
+}
+
+void injectDll(string processName)
+{
+	string dllName = "DynamicLibrary.dll";
+	LPVOID lpStartAddress, dllNameAddress;
+	HANDLE hRemoteProcess = OpenProcess(PROCESS_ALL_ACCESS | PROCESS_VM_WRITE, true , getPID(processName));//дескриптор демо процесса
+
+	if (hRemoteProcess != NULL)
+	{
+		lpStartAddress = (LPVOID)GetProcAddress(GetModuleHandle(L"kernel32.dll"), "LoadLibraryA");//адрес LoadLibraryA в демо процессе
+		dllNameAddress = VirtualAllocEx(hRemoteProcess, NULL, dllName.length() + 1, MEM_COMMIT, PAGE_READWRITE);//выделяем память в демо процессе для имени dll
+		WriteProcessMemory(hRemoteProcess, dllNameAddress, dllName.c_str(), dllName.length() + 1, NULL);//записываем строку в память демо процесса
+
+		if (CreateRemoteThread(hRemoteProcess, NULL, 0, (LPTHREAD_START_ROUTINE)lpStartAddress, (LPVOID)dllNameAddress, 0, NULL))
+		{
+			Sleep(1000);
+			cout << "Created remote thread" << endl;
+			CloseHandle(hRemoteProcess);
+		}
+		else
+			cout << "Cant create remote thread" << endl;
+	}
+	else {
+		cout << "Cannot find process " << processName << endl;
+	}
+
 }
 
 void loadLibrary()
@@ -82,6 +134,7 @@ void main()
 	loadLibrary();
 
 	cout << "" << endl << "<<Task4 - Dll injection>>:" << endl;
+	injectDll("");
 
 	DeleteObjects();
 }
